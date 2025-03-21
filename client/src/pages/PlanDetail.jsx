@@ -20,10 +20,6 @@ const PlanDetailsPage = () => {
   const [showPostponeModal, setShowPostponeModal] = useState(false);
   const [postponeDays, setPostponeDays] = useState(1);
   const [postponeReason, setPostponeReason] = useState("");
-  const [showCheatSheetDialog, setShowCheatSheetDialog] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
-  const [currentTopicForCheatSheet, setCurrentTopicForCheatSheet] =
-    useState(null);
 
   useEffect(() => {
     if (location.state && location.state.planData) {
@@ -466,8 +462,14 @@ const PlanDetailsPage = () => {
                           <button
                             onClick={() => {
                               if (topic.isAccessible) {
-                                setCurrentTopicForCheatSheet(topic);
-                                setShowCheatSheetDialog(true);
+                                navigate("/dashboard/plandetail/cheatsheet", {
+                                  state: {
+                                    topic: topic.name,
+                                    details: topic.Details,
+                                    type: "detailed", // Directly use detailed type
+                                    studyHours: topic.studyHours,
+                                  },
+                                });
                               }
                             }}
                             className={`inline-flex items-center ml-2 ${
@@ -530,82 +532,6 @@ const PlanDetailsPage = () => {
           </div>
         </div>
       </div>
-      {showCheatSheetDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h3 className="text-lg font-semibold mb-4">
-              Select Cheat Sheet Type for {currentTopicForCheatSheet?.name}
-            </h3>
-            <div className="space-y-3">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="cheatSheetType"
-                  value="short"
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                  className="form-radio text-blue-600"
-                />
-                <span>Short - Key points only</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="cheatSheetType"
-                  value="brief"
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                  className="form-radio text-blue-600"
-                />
-                <span>Brief - Main concepts with examples</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  name="cheatSheetType"
-                  value="detailed"
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                  className="form-radio text-blue-600"
-                />
-                <span>Detailed - Comprehensive coverage</span>
-              </label>
-            </div>
-            <div className="mt-6 flex justify-end space-x-3">
-              <button
-                onClick={() => {
-                  setShowCheatSheetDialog(false);
-                  setSelectedOption("");
-                  setCurrentTopicForCheatSheet(null);
-                }}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  navigate("/dashboard/plandetail/cheatsheet", {
-                    state: {
-                      topic: currentTopicForCheatSheet?.name,
-                      details: currentTopicForCheatSheet?.Details,
-                      type: selectedOption,
-                      studyHours: currentTopicForCheatSheet?.studyHours,
-                    },
-                  });
-                  setShowCheatSheetDialog(false);
-                  setSelectedOption("");
-                  setCurrentTopicForCheatSheet(null);
-                }}
-                disabled={!selectedOption}
-                className={`px-4 py-2 rounded-lg ${
-                  selectedOption
-                    ? "bg-[#c4e456] text-gray-800 hover:bg-opacity-80"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
-              >
-                Generate
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

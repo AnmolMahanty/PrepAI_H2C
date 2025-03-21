@@ -295,53 +295,54 @@ async function generateCheatSheet(userInputs) {
     throw new Error("Missing required fields: topic and topic_description");
   }
 
-  const prompt = `Generate a **Cheat Sheet** based on the details below:  
-- **Topic:** ${topic}  
-- **Description:** ${topic_description}  
-- **Cheat Sheet Type:** ${cheatsheet_type || "Detailed"}  
+  const prompt = `Generate a comprehensive **Cheat Sheet** based on the details below:
 
-### **Cheat Sheet Types:**  
-- **Short:** Covers only key points, definitions, and must-know facts.  
-- **Brief:** Summarizes main concepts with short explanations and examples.  
-- **Detailed:** Provides comprehensive coverage with explanations, formulas, and multiple examples.  
+- **Topic:** ${topic}
+- **Description:** ${topic_description}
+- **Cheat Sheet Type:** Comprehensive
 
-### **Formatting Guidelines:**  
-Structure the cheat sheet **like well-organized student notes**, ensuring **clarity, readability, and easy revision**.  
+This cheat sheet should be approximately 1000-1500 words and structured like well-organized student notes, balancing depth with readability. 
 
- **Headings & Subheadings:** Clearly organize topics for quick navigation.  
+### **Formatting Guidelines:**
 
- **Key Terms & Definitions:**  
-   - Provide a **brief definition** for each concept.  
-   - Use **bold** or *italic* text for emphasis.  
-   - Keep explanations **short and precise**.  
+**Headings & Structure:**
+- Use a clear hierarchical structure with descriptive headings and subheadings
+- All headings should be **bold** for easy navigation
+- Organize content logically from foundational concepts to advanced applications
 
- **Examples & Applications:**  
-   - Each concept should include at least **one relevant example**.  
-   - Clearly separate examples using a **line break** for readability.  
-   - Use proper **formatting for equations, code, or data tables**.  
+**Key Terms & Definitions:**
+- Highlight **key terms** in bold
+- Provide concise but complete definitions
+- Use *italics* for emphasis on important points
+- Include contextual information where necessary for understanding
 
- **Bullet Points & Short Sentences:**  
-   - Avoid large paragraphs—break content into digestible points.  
-   - Use simple language for quick understanding.  
+**Examples & Applications:**
+- Include 2-3 clear examples for each major concept
+- Show practical applications of theoretical concepts
+- Use code blocks, tables, or diagrams when appropriate
+- Provide step-by-step breakdowns for complex processes
 
- **Formulas & Equations:**  
-   - Display formulas **properly spaced** and easy to read.  
-   - Show **step-by-step breakdowns** when needed.  
+**Explanations & Formulas:**
+- Break down complex ideas into digestible bullet points (4-6 per concept)
+- Display formulas with proper spacing and notation
+- Explain the purpose and context of each formula
+- Identify when and how to apply specific techniques
 
- **Common Mistakes & Tips:**  
-   - Highlight **common errors** students make.  
-   - Provide **study shortcuts or memory aids**.  
+**Common Pitfalls & Best Practices:**
+- Highlight frequent misconceptions or errors
+- Provide troubleshooting tips for difficult concepts
+- Include memory aids and learning strategies
+- Add efficiency tips for practical application
 
-### **Spacing & Readability:**  
- Leave **line gaps** between sections to avoid clutter.  
+**Readability:**
+- Use moderate spacing with clear section breaks
+- Employ tables, bullet points, and numbered lists for clear organization
+- Ensure sufficient white space to prevent visual overwhelm
+- Structure for both quick reference and deeper study
 
- Ensure **proper indentation** for better structure.  
+**Return the cheat sheet in Markdown format** with proper formatting for headings, lists, tables, and emphasis.
 
- Use tables, bullet points, and symbols for **quick skimming**.  
-
-**Return the cheat sheet in Markdown format** (for proper headings, lists, tables, and emphasis).  
-**Only provide the formatted cheat sheet without any extra explanations or metadata.**  
-`;
+**Only provide the formatted cheat sheet without any extra explanations or metadata.**`;
 
   try {
     const response = await axios.post(
