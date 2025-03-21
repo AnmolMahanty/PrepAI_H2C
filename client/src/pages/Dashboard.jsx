@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/context/AuthContext";
+import { Mic, MicOff, Loader2, BrainCircuit } from "lucide-react";
 
 import { LogOut } from "lucide-react";
 
@@ -88,25 +89,12 @@ const Dashboard = () => {
               />
             </svg>
           </div>
-          <div
-            className={`flex justify-center items-center p-2 cursor-pointer ${
+          <BrainCircuit
+            onClick={handlefeature2}
+            className={`h-[38px] w-[38px] flex justify-center items-center p-2 cursor-pointer ${
               selected === "feature2" ? "bg-[#c4e456]" : "bg-transparent"
             } rounded-md`}
-            onClick={handlefeature2}
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7.26855 0.25H3.23145C1.2251 0.25 0.25 1.18164 0.25 3.09961V18.9004C0.25 20.8184 1.2251 21.75 3.23145 21.75H7.26855C9.2749 21.75 10.25 20.8184 10.25 18.9004V3.09961C10.25 1.18164 9.2749 0.25 7.26855 0.25ZM8.75 18.9004C8.75 19.9131 8.53564 20.25 7.26855 20.25H3.23145C1.96436 20.25 1.75 19.9131 1.75 18.9004V3.09961C1.75 2.08691 1.96436 1.75 3.23145 1.75H7.26855C8.53564 1.75 8.75 2.08691 8.75 3.09961V18.9004ZM18.7686 0.25H14.7314C12.7251 0.25 11.75 1.18164 11.75 3.09961V11.9004C11.75 13.8184 12.7251 14.75 14.7314 14.75H18.7686C20.7749 14.75 21.75 13.8184 21.75 11.9004V3.09961C21.75 1.18164 20.7749 0.25 18.7686 0.25ZM20.25 11.9004C20.25 12.9131 20.0356 13.25 18.7686 13.25H14.7314C13.4644 13.25 13.25 12.9131 13.25 11.9004V3.09961C13.25 2.08691 13.4644 1.75 14.7314 1.75H18.7686C20.0356 1.75 20.25 2.08691 20.25 3.09961V11.9004Z"
-                fill={selected === "feature2" ? "black" : "#6b7280"}
-              />
-            </svg>
-          </div>
+          />
 
           <div
             className={`flex justify-center items-center p-2 cursor-pointer ${

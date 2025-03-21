@@ -21,6 +21,7 @@ import Navbar from "../components/Navbar";
 import image from "../assets/image.png";
 import { useAuth } from "../lib/context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Hero from "../assets/hero.jpg";
 
 const Home = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -54,47 +55,13 @@ const Home = () => {
     }
   };
 
-  const nextTestimonial = () => {
-    setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setActiveTestimonial(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
-    );
-  };
-
-  const testimonials = [
-    {
-      name: "Alex Chen",
-      role: "Computer Science Student",
-      image: image,
-      quote:
-        "Demo transformed my study habits. The AI-powered scheduling helped me improve my grades by 20% in just one semester!",
-    },
-    {
-      name: "Sarah Johnson",
-      role: "Medical Student",
-      image: image,
-      quote:
-        "The adaptive quizzes are incredibly effective. Demo identified my weak areas and helped me focus my study time where it matters most.",
-    },
-    {
-      name: "Michael Torres",
-      role: "MBA Candidate",
-      image: image,
-      quote:
-        "I love how Demo adjusts in real-time to my progress. It's like having a personal study coach that knows exactly what I need.",
-    },
-  ];
-
   return (
     <div className="bg-[#ffffff] text-black min-h-screen font-sans overflow-x-hidden">
       {/* Navigation */}
       <Navbar />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 md:pt-24 md:pb-32 px-4 relative">
+      <section className="pt-32 pb-20 md:pt-24 md:pb-32 px-12 relative">
         <div
           className="absolute top-0 left-0 w-full h-full opacity-30"
           style={{
@@ -139,11 +106,23 @@ const Home = () => {
               />
             </button>
           </div>
+
+          {/* Add the image container */}
+          <div className="relative hidden md:block">
+            <img
+              src={Hero}
+              alt="Hero illustration"
+              className="w-full h-full object-contain rounded-lg"
+              style={{
+                transform: `translateY(${scrollY * -0.05}px)`,
+              }}
+            />
+          </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4 bg-[#f8f8ec]">
+      <section id="features" className="w-full py-20 px-12 bg-[#f8f8ec]">
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -244,7 +223,7 @@ const Home = () => {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 px-4 bg-[#ffffff]">
+      <section id="how-it-works" className="py-20 px-10 bg-[#ffffff]">
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -332,8 +311,6 @@ const Home = () => {
               </div>
             </div>
           </div>
-
-          
         </div>
       </section>
 
@@ -354,7 +331,7 @@ const Home = () => {
           </h2>
           <p className="text-gray-700 max-w-2xl mx-auto mb-10">
             Join thousands of students who have already improved their grades
-            and reduced study stress with Demo's AI-powered study planner.
+            and reduced study stress with PrepAI's's AI-powered study planner.
           </p>
 
           <div className="bg-[#ffffff]/80 backdrop-blur-md max-w-lg mx-auto p-8 rounded-xl border border-[#c4e456]/20 shadow-xl shadow-[#c4e456]/5">
@@ -390,20 +367,8 @@ const Home = () => {
       {/* Footer */}
       <footer className="bg-gray-100 text-gray-700">
         <div className="container mx-auto px-4">
-          
-          <div className="border-t border-gray-300 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-600">
-              &copy; 2025 Demo. All rights reserved.
-            </p>
-            <div className="mt-4 md:mt-0">
-              <a
-                href="#"
-                className="text-sm text-gray-600 hover:text-[#c4e456] transition-colors duration-300 mr-4"
-              >
-                Terms of Service
-              </a>
-              
-            </div>
+          <div className="border-t border-gray-300 py-5 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-600">&copy; 2025 PrepAI</p>
           </div>
         </div>
       </footer>
