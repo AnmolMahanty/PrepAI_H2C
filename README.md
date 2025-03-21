@@ -53,6 +53,10 @@
    npm install
    ```
 3. Create a `.env` file in the `client` directory and configure the required environment variables.
+    ```bash
+   VITE_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+   VITE_APPWRITE_PROJECT_ID=67d96bcb002d7922380a
+   ```
 4. Start the client:
    ```bash
    npm run dev
@@ -68,6 +72,16 @@
    npm install
    ```
 3. Create a `.env` file in the `backend` directory and configure the required environment variables.
+     ```bash
+    GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+    GROQ_API_KEY = "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"
+    APPWRITE_ENDPOINT = "https://cloud.appwrite.io/v1"
+    APPWRITE_PROJECT_ID = "67d96bcb002d7922380a"
+    APPWRITE_DATABASE_ID = "67d96e430009f1cc86c5"
+    YOUTUBE_API_KEY = AIzaSyDOc1YH6DPeMfuGFObfj8wy2qbNCmkaPfo
+    DEEPGRAM_API_KEY=1b2919a15122eee3888c0e719073c5750f8ca0f8
+    ASSEMBLY_API_KEY=f7a342296bb544c39702442e84b4b356PORT=5000
+   ```
 4. Start the backend server:
    ```bash
    npm run dev
