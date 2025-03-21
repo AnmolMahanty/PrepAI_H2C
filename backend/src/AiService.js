@@ -381,16 +381,132 @@ Structure the cheat sheet **like well-organized student notes**, ensuring **clar
   }
 }
 
+const rescheduleStudyPlan = async (
+  studyPlanData,
+  testDate,
+  currentDate,
+  planId
+) => {
+  try {
+    const systemPrompt = `I am PREPAI, your AI-powered study planner. I will reschedule missed sessions and prioritize topics with low test scores based on your current study plan and progress data. The rescheduled plan will be provided in JSON format only.
+
+    *Original Study Plan:* ${JSON.stringify(studyPlanData)}
+    *Plan's Test Date:* ${testDate}
+    *Current Date:* ${currentDate}
+
+    The output must strictly follow this structure:
+[
+  {
+    "Week": 1,
+    "Tasks": [
+      {
+        "Topic": "",
+        "Date": "YYYY-MM-DD",
+        "Study Hours": 0,
+        "Details": [
+          "Point 1",
+          "Point 2",
+          "Point 3"
+        ],
+        YTplaylist: "(YouTube Playlist URL)",
+        testTaken: (true/false - boolean),
+        testScore: (0-100 - integer)
+      } 
+    ]
+  }
+  
+  {
+    "Week": 2,
+    "Tasks": [
+      {
+        "Topic": "",
+        "Date": "YYYY-MM-DD",
+        "Study Hours": 0,
+        "Details": [
+          "Point 1",
+          "Point 2",
+          "Point 3"
+        ],
+        YTplaylist: "(YouTube Playlist URL)",
+        testTaken: (true/false - boolean),
+        testScore: (0-100 - integer)
+      }
+    ]
+  }
+]
+
+    ### Rescheduling Rules:
+    1. JSON Format Only
+    2. Never chanage the YTplaylist, testTaken, testScore
+    3. Reschedule the entire plan based on the test date and current date
+
+    Generate the rescheduled study plan strictly in JSON format as specified.`;
+
+    const response = await axios.post(
+      GROQ_API_URL,
+      {
+        model: "deepseek-r1-distill-llama-70b",
+        messages: [
+          { role: "system", content: systemPrompt },
+          {
+            role: "user",
+            content:
+              "Please reschedule my study plan based on my test results and missed sessions.",
+          },
+        ],
+        max_tokens: 4000,
+        temperature: 0.1, // Low temperature for more deterministic output
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${GROQ_API_KEY}`,
+        },
+      }
+    );
+
+    console.log("AI Response:", response.data);
+
+    // Parse and validate the response before updating
+    const updatedPlan = response.data;
+    let plan = updatedPlan.choices[0].message.content;
+    plan = plan.replace(/```json/g, "").replace(/```/g, "");
+
+    const jsonMatch = plan.match(/\{[\s\S]*\}|\[[\s\S]*\]/); // Matches JSON objects or arrays
+
+    if (jsonMatch) {
+      console.log("JSON Match:", jsonMatch[0]);
+      plan = jsonMatch[0]; // Extract the JSON part
+    } else {
+      throw new Error("No valid JSON found in the response");
+    }
+
+    plan = plan.replace(/\\n/g, "").replace(/\\/g, "");
+
+    // Update the plan in the database
+    await updatePlan(planId, plan);
+
+    return updatedPlan;
+  } catch (error) {
+    console.error("Error in rescheduleStudyPlan:", error);
+    throw new Error(
+      "Failed to reschedule study plan: " + (error.message || "Unknown error")
+    );
+  }
+};
+
 console.log("Exporting from AiService.js:", {
   generateStudyPlan,
   editStudyPlan,
   generateCheatSheet,
+  rescheduleStudyPlan,
 });
 
 module.exports = {
   generateStudyPlan,
   editStudyPlan,
   generateCheatSheet,
+  rescheduleStudyPlan,
 };
 
 // Test the generateStudyPlan function

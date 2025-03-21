@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // Quiz Component
 const Quiz = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [quizTopic, setQuizTopic] = useState(
     location.state?.topic || "General Knowledge"
   );
@@ -33,8 +34,158 @@ const Quiz = () => {
     JSON.parse(location.state?.planData?.plan || null)
   );
 
+
   // Sample questions - replace with your actual questions
-  const sampleQuestions = [{"id":"1","question":"What is the derivative of f(x) = x^2?","options":["2x","x^2","x","1"],"correctAnswer":0,"explanation":{"correct":"The derivative of x^2 is 2x. This is found using the power rule of differentiation, which states that the derivative of x^n is nx^(n-1). Applying this rule to x^2, we get 2x^(2-1) = 2x.","incorrect":{"0":"The derivative of x^2 is 2x. This is found using the power rule of differentiation, which states that the derivative of x^n is nx^(n-1). Applying this rule to x^2, we get 2x^(2-1) = 2x.","1":"x^2 is the function itself, not its derivative.","2":"x is the derivative of x^2 but not the complete derivative.","3":"1 is the derivative of a constant function, not a function like x^2."}}},{"id":"2","question":"Which theorem states that the derivative of a function is zero at a point where the function is differentiable and attains a local maximum or minimum?","options":["Mean Value Theorem","Fundamental Theorem of Calculus","Intermediate Value Theorem","Fermat's Theorem"],"correctAnswer":3,"explanation":{"correct":"Fermat's Theorem states that if a function f(x) is differentiable at a point x = c and attains a local maximum or minimum at c, then f'(c) = 0. This theorem helps identify potential maxima and minima of a function.","incorrect":{"0":"The Mean Value Theorem relates the average rate of change to the instantaneous rate of change.","1":"The Fundamental Theorem of Calculus connects differentiation and integration.","2":"The Intermediate Value Theorem guarantees the existence of a root for a continuous function within a given interval.","3":"Fermat's Theorem states that if a function f(x) is differentiable at a point x = c and attains a local maximum or minimum at c, then f'(c) = 0. This theorem helps identify potential maxima and minima of a function."}}},{"id":"3","question":"What is the limit of (x^2 - 1) / (x - 1) as x approaches 1?","options":["0","1","2","Does not exist"],"correctAnswer":2,"explanation":{"correct":"The limit of (x^2 - 1) / (x - 1) as x approaches 1 is 2. This can be found by factoring the numerator as (x+1)(x-1) and canceling the common factor of (x-1). This leaves us with the limit of (x+1) as x approaches 1, which evaluates to 2.","incorrect":{"0":"While the limit is finite, it is not equal to zero.","1":"This is not the correct value of the limit.","2":"The limit of (x^2 - 1) / (x - 1) as x approaches 1 is 2. This can be found by factoring the numerator as (x+1)(x-1) and canceling the common factor of (x-1). This leaves us with the limit of (x+1) as x approaches 1, which evaluates to 2.","3":"The limit exists and can be calculated."}}},{"id":"4","question":"A function f(x) is continuous on the interval [a, b]. According to the Mean Value Theorem, there exists a point c in (a, b) such that:","options":["f'(c) = 0","f'(c) = (f(b) - f(a)) / (b - a)","f(c) = (f(b) + f(a)) / 2","f(c) = f(a) + (b - a)f'(a)"],"correctAnswer":1,"explanation":{"correct":"The Mean Value Theorem states that if a function is continuous on a closed interval [a, b] and differentiable on the open interval (a, b), then there exists at least one point c in (a, b) where the instantaneous rate of change (the derivative) is equal to the average rate of change over the interval. This is represented as f'(c) = (f(b) - f(a)) / (b - a).","incorrect":{"0":"This is not a condition of the Mean Value Theorem.","1":"The Mean Value Theorem states that if a function is continuous on a closed interval [a, b] and differentiable on the open interval (a, b), then there exists at least one point c in (a, b) where the instantaneous rate of change (the derivative) is equal to the average rate of change over the interval. This is represented as f'(c) = (f(b) - f(a)) / (b - a).","2":"This describes the average value of the function, not the Mean Value Theorem.","3":"This statement is related to the Fundamental Theorem of Calculus, not the Mean Value Theorem."}}},{"id":"5","question":"If f'(x) = 3x^2 - 6x, find the critical points of f(x).","options":["x = 0 and x = 2","x = 1 and x = 3","x = -2 and x = 0","x = 0 only"],"correctAnswer":0,"explanation":{"correct":"Critical points occur where the derivative is zero or undefined. Setting f'(x) = 0, we get 3x^2 - 6x = 0. Factoring, we have 3x(x - 2) = 0, so the critical points are x = 0 and x = 2.","incorrect":{"0":"Critical points occur where the derivative is zero or undefined. Setting f'(x) = 0, we get 3x^2 - 6x = 0. Factoring, we have 3x(x - 2) = 0, so the critical points are x = 0 and x = 2.","1":"These values are not solutions to the derivative equation.","2":"These values do not correspond to where the derivative is zero.","3":"While x = 0 is a critical point, x = -2 is not."}}},{"id":"6","question":"A particle moves along a straight line with velocity v(t) = t^2 - 4t + 3. Find the displacement of the particle during the time interval [0, 3].","options":["0","3","9","1"],"correctAnswer":0,"explanation":{"correct":"Displacement is the change in position.  It is found by integrating the velocity function over the time interval. The integral of v(t) = t^2 - 4t + 3 is (1/3)t^3 - 2t^2 + 3t. Evaluating this from t=0 to t=3 gives us [(1/3)(3)^3 - 2(3)^2 + 3(3)] - [(1/3)(0)^3 - 2(0)^2 + 3(0)] = 9 - 18 + 9 = 0.","incorrect":{"0":"Displacement is the change in position.  It is found by integrating the velocity function over the time interval. The integral of v(t) = t^2 - 4t + 3 is (1/3)t^3 - 2t^2 + 3t. Evaluating this from t=0 to t=3 gives us [(1/3)(3)^3 - 2(3)^2 + 3(3)] - [(1/3)(0)^3 - 2(0)^2 + 3(0)] = 9 - 18 + 9 = 0.","1":"The displacement is not equal to the velocity at t=3.","2":"This value is too large and does not reflect the integration of the velocity function.","3":"This value is too large and does not reflect the integration of the velocity function."}}},{"id":"7","question":"Suppose f(x) = sin(x) and g(x) = cos(x).  What is the value of  (f * g)'(π/4)?","options":["√2 / 2","-√2 / 2","1","0"],"correctAnswer":1,"explanation":{"correct":"Here, (f * g)'(x) represents the derivative of the product of f(x) and g(x). Using the product rule, we have (f * g)'(x) = f'(x)g(x) + f(x)g'(x).  Therefore, (f * g)'(π/4) = (cos(π/4))cos(π/4) + (sin(π/4))( -sin(π/4)). This simplifies to (√2 / 2)(√2 / 2) + (√2 / 2)(-√2 / 2) = √2 / 2 - √2 / 2 = 0.","incorrect":{"0":"The derivative of the product involves both f'(x) and g'(x) terms.","1":"Here, (f * g)'(x) represents the derivative of the product of f(x) and g(x). Using the product rule, we have (f * g)'(x) = f'(x)g(x) + f(x)g'(x).  Therefore, (f * g)'(π/4) = (cos(π/4))cos(π/4) + (sin(π/4))( -sin(π/4)). This simplifies to (√2 / 2)(√2 / 2) + (√2 / 2)(-√2 / 2) = √2 / 2 - √2 / 2 = 0.","2":"The product rule states that the derivative of a product is found by adding the derivatives of the individual functions multiplied together, not by simply adding the functions themselves.","3":"This value does not correspond to the correct evaluation of the derivative using the product rule."}}},{"id":"8","question":"Find the absolute maximum value of f(x) = x^3 - 3x^2 + 2 on the interval [0, 3].","options":["2","5","9","0"],"correctAnswer":5,"explanation":{"correct":"To find the absolute maximum on the closed interval [0, 3], we need to consider the function's critical points within the interval and the function's values at the endpoints. First, find the derivative f'(x) = 3x^2 - 6x. Set it to zero and solve for x: 3x^2 - 6x = 0. This gives us x = 0 and x = 2. Evaluate f(x) at these critical points and the endpoints: f(0) = 2, f(2) = -2, f(3) = 2. The absolute maximum value is 5, which occurs at x = 2.","incorrect":{"0":"While f(0) and f(3) are equal to 2, they are not the absolute maximum.","1":"This value is too small and does not represent the maximum value of the function.","2":"This option is incorrect because it doesn't match the correct answer.","3":"This value is too small and does not represent the maximum value of the function."}}}];
+  const sampleQuestions = [
+    {
+      id: "1",
+      question: "What is the derivative of f(x) = x^2?",
+      options: ["2x", "x^2", "x", "1"],
+      correctAnswer: 0,
+      explanation: {
+        correct:
+          "The derivative of x^2 is 2x. This is found using the power rule of differentiation, which states that the derivative of x^n is nx^(n-1). Applying this rule to x^2, we get 2x^(2-1) = 2x.",
+        incorrect: {
+          0: "The derivative of x^2 is 2x. This is found using the power rule of differentiation, which states that the derivative of x^n is nx^(n-1). Applying this rule to x^2, we get 2x^(2-1) = 2x.",
+          1: "x^2 is the function itself, not its derivative.",
+          2: "x is the derivative of x^2 but not the complete derivative.",
+          3: "1 is the derivative of a constant function, not a function like x^2.",
+        },
+      },
+    },
+    {
+      id: "2",
+      question:
+        "Which theorem states that the derivative of a function is zero at a point where the function is differentiable and attains a local maximum or minimum?",
+      options: [
+        "Mean Value Theorem",
+        "Fundamental Theorem of Calculus",
+        "Intermediate Value Theorem",
+        "Fermat's Theorem",
+      ],
+      correctAnswer: 3,
+      explanation: {
+        correct:
+          "Fermat's Theorem states that if a function f(x) is differentiable at a point x = c and attains a local maximum or minimum at c, then f'(c) = 0. This theorem helps identify potential maxima and minima of a function.",
+        incorrect: {
+          0: "The Mean Value Theorem relates the average rate of change to the instantaneous rate of change.",
+          1: "The Fundamental Theorem of Calculus connects differentiation and integration.",
+          2: "The Intermediate Value Theorem guarantees the existence of a root for a continuous function within a given interval.",
+          3: "Fermat's Theorem states that if a function f(x) is differentiable at a point x = c and attains a local maximum or minimum at c, then f'(c) = 0. This theorem helps identify potential maxima and minima of a function.",
+        },
+      },
+    },
+    {
+      id: "3",
+      question: "What is the limit of (x^2 - 1) / (x - 1) as x approaches 1?",
+      options: ["0", "1", "2", "Does not exist"],
+      correctAnswer: 2,
+      explanation: {
+        correct:
+          "The limit of (x^2 - 1) / (x - 1) as x approaches 1 is 2. This can be found by factoring the numerator as (x+1)(x-1) and canceling the common factor of (x-1). This leaves us with the limit of (x+1) as x approaches 1, which evaluates to 2.",
+        incorrect: {
+          0: "While the limit is finite, it is not equal to zero.",
+          1: "This is not the correct value of the limit.",
+          2: "The limit of (x^2 - 1) / (x - 1) as x approaches 1 is 2. This can be found by factoring the numerator as (x+1)(x-1) and canceling the common factor of (x-1). This leaves us with the limit of (x+1) as x approaches 1, which evaluates to 2.",
+          3: "The limit exists and can be calculated.",
+        },
+      },
+    },
+    {
+      id: "4",
+      question:
+        "A function f(x) is continuous on the interval [a, b]. According to the Mean Value Theorem, there exists a point c in (a, b) such that:",
+      options: [
+        "f'(c) = 0",
+        "f'(c) = (f(b) - f(a)) / (b - a)",
+        "f(c) = (f(b) + f(a)) / 2",
+        "f(c) = f(a) + (b - a)f'(a)",
+      ],
+      correctAnswer: 1,
+      explanation: {
+        correct:
+          "The Mean Value Theorem states that if a function is continuous on a closed interval [a, b] and differentiable on the open interval (a, b), then there exists at least one point c in (a, b) where the instantaneous rate of change (the derivative) is equal to the average rate of change over the interval. This is represented as f'(c) = (f(b) - f(a)) / (b - a).",
+        incorrect: {
+          0: "This is not a condition of the Mean Value Theorem.",
+          1: "The Mean Value Theorem states that if a function is continuous on a closed interval [a, b] and differentiable on the open interval (a, b), then there exists at least one point c in (a, b) where the instantaneous rate of change (the derivative) is equal to the average rate of change over the interval. This is represented as f'(c) = (f(b) - f(a)) / (b - a).",
+          2: "This describes the average value of the function, not the Mean Value Theorem.",
+          3: "This statement is related to the Fundamental Theorem of Calculus, not the Mean Value Theorem.",
+        },
+      },
+    },
+    {
+      id: "5",
+      question: "If f'(x) = 3x^2 - 6x, find the critical points of f(x).",
+      options: [
+        "x = 0 and x = 2",
+        "x = 1 and x = 3",
+        "x = -2 and x = 0",
+        "x = 0 only",
+      ],
+      correctAnswer: 0,
+      explanation: {
+        correct:
+          "Critical points occur where the derivative is zero or undefined. Setting f'(x) = 0, we get 3x^2 - 6x = 0. Factoring, we have 3x(x - 2) = 0, so the critical points are x = 0 and x = 2.",
+        incorrect: {
+          0: "Critical points occur where the derivative is zero or undefined. Setting f'(x) = 0, we get 3x^2 - 6x = 0. Factoring, we have 3x(x - 2) = 0, so the critical points are x = 0 and x = 2.",
+          1: "These values are not solutions to the derivative equation.",
+          2: "These values do not correspond to where the derivative is zero.",
+          3: "While x = 0 is a critical point, x = -2 is not.",
+        },
+      },
+    },
+    {
+      id: "6",
+      question:
+        "A particle moves along a straight line with velocity v(t) = t^2 - 4t + 3. Find the displacement of the particle during the time interval [0, 3].",
+      options: ["0", "3", "9", "1"],
+      correctAnswer: 0,
+      explanation: {
+        correct:
+          "Displacement is the change in position.  It is found by integrating the velocity function over the time interval. The integral of v(t) = t^2 - 4t + 3 is (1/3)t^3 - 2t^2 + 3t. Evaluating this from t=0 to t=3 gives us [(1/3)(3)^3 - 2(3)^2 + 3(3)] - [(1/3)(0)^3 - 2(0)^2 + 3(0)] = 9 - 18 + 9 = 0.",
+        incorrect: {
+          0: "Displacement is the change in position.  It is found by integrating the velocity function over the time interval. The integral of v(t) = t^2 - 4t + 3 is (1/3)t^3 - 2t^2 + 3t. Evaluating this from t=0 to t=3 gives us [(1/3)(3)^3 - 2(3)^2 + 3(3)] - [(1/3)(0)^3 - 2(0)^2 + 3(0)] = 9 - 18 + 9 = 0.",
+          1: "The displacement is not equal to the velocity at t=3.",
+          2: "This value is too large and does not reflect the integration of the velocity function.",
+          3: "This value is too large and does not reflect the integration of the velocity function.",
+        },
+      },
+    },
+    {
+      id: "7",
+      question:
+        "Suppose f(x) = sin(x) and g(x) = cos(x).  What is the value of  (f * g)'(π/4)?",
+      options: ["√2 / 2", "-√2 / 2", "1", "0"],
+      correctAnswer: 1,
+      explanation: {
+        correct:
+          "Here, (f * g)'(x) represents the derivative of the product of f(x) and g(x). Using the product rule, we have (f * g)'(x) = f'(x)g(x) + f(x)g'(x).  Therefore, (f * g)'(π/4) = (cos(π/4))cos(π/4) + (sin(π/4))( -sin(π/4)). This simplifies to (√2 / 2)(√2 / 2) + (√2 / 2)(-√2 / 2) = √2 / 2 - √2 / 2 = 0.",
+        incorrect: {
+          0: "The derivative of the product involves both f'(x) and g'(x) terms.",
+          1: "Here, (f * g)'(x) represents the derivative of the product of f(x) and g(x). Using the product rule, we have (f * g)'(x) = f'(x)g(x) + f(x)g'(x).  Therefore, (f * g)'(π/4) = (cos(π/4))cos(π/4) + (sin(π/4))( -sin(π/4)). This simplifies to (√2 / 2)(√2 / 2) + (√2 / 2)(-√2 / 2) = √2 / 2 - √2 / 2 = 0.",
+          2: "The product rule states that the derivative of a product is found by adding the derivatives of the individual functions multiplied together, not by simply adding the functions themselves.",
+          3: "This value does not correspond to the correct evaluation of the derivative using the product rule.",
+        },
+      },
+    },
+    {
+      id: "8",
+      question:
+        "Find the absolute maximum value of f(x) = x^3 - 3x^2 + 2 on the interval [0, 3].",
+      options: ["2", "5", "9", "0"],
+      correctAnswer: 5,
+      explanation: {
+        correct:
+          "To find the absolute maximum on the closed interval [0, 3], we need to consider the function's critical points within the interval and the function's values at the endpoints. First, find the derivative f'(x) = 3x^2 - 6x. Set it to zero and solve for x: 3x^2 - 6x = 0. This gives us x = 0 and x = 2. Evaluate f(x) at these critical points and the endpoints: f(0) = 2, f(2) = -2, f(3) = 2. The absolute maximum value is 5, which occurs at x = 2.",
+        incorrect: {
+          0: "While f(0) and f(3) are equal to 2, they are not the absolute maximum.",
+          1: "This value is too small and does not represent the maximum value of the function.",
+          2: "This option is incorrect because it doesn't match the correct answer.",
+          3: "This value is too small and does not represent the maximum value of the function.",
+        },
+      },
+    },
+  ];
 
   // Format time from seconds to MM:SS
   const formatTime = (seconds) => {
@@ -136,12 +287,14 @@ const Quiz = () => {
           correctAnswer: q.correctAnswer, // Already numeric from backend
         })
       );
-      transformedQuestions.map((question) => {if(question.correctAnswer>3){
-        //compare the correctAnswer with the options and find the index of the correct answer
-        question.correctAnswer = question.options.findIndex((option) => option.text == question.correctAnswer);
-        
-      }});
-
+      transformedQuestions.map((question) => {
+        if (question.correctAnswer > 3) {
+          //compare the correctAnswer with the options and find the index of the correct answer
+          question.correctAnswer = question.options.findIndex(
+            (option) => option.text == question.correctAnswer
+          );
+        }
+      });
 
       setQuestions(transformedQuestions);
       setQuizStarted(true);
@@ -181,6 +334,111 @@ const Quiz = () => {
     }
   };
 
+  const handledashboardandreschedule = async () => {
+
+    if (quizResults.score >= 70) {
+      // If the user passes the quiz, navigate to the dashboard
+      navigate("/dashboard/feature1");
+    }
+    else{
+    setLoading(true);
+    try {
+      console.log("Plan data:", entirePlan);
+
+      if (!entirePlan) {
+        throw new Error("Plan data is missing");
+      }
+
+      // Find the current task within the plan structure
+      let taskDate = null;
+      let taskFound = false;
+
+      // The plan structure may vary, so we need to handle different formats
+      if (entirePlan.weeks) {
+        // Format: plan.weeks[].topics[]
+        const week = entirePlan.weeks.find(
+          (w) => w.Week === String(weekIndex + 1) || w.Week === weekIndex + 1
+        );
+        if (week && week.topics) {
+          const topic = week.topics.find((t) => t.id === topicId);
+          if (topic) {
+            taskDate = topic.Date;
+            taskFound = true;
+          }
+        }
+      } else if (Array.isArray(entirePlan)) {
+        // Format: plan[]
+        const week = entirePlan.find(
+          (w) => w.Week === String(weekIndex + 1) || w.Week === weekIndex + 1
+        );
+        if (week && week.Tasks) {
+          for (let i = 0; i < week.Tasks.length; i++) {
+            if (`week-${week.Week}-task-${i}` === topicId) {
+              taskDate = week.Tasks[i].Date;
+              taskFound = true;
+              break;
+            }
+          }
+        }
+      }
+
+      const currentDate = new Date().toISOString().split("T")[0];
+      // If we found the task, use its date, otherwise use current date
+      const testDate = taskDate || currentDate;
+
+      console.log(
+        "Rescheduling with testDate:",
+        testDate,
+        "currentDate:",
+        currentDate
+      );
+
+      // First, reschedule the plan
+      const rescheduleResponse = await axios.post(
+        "http://localhost:5000/reschedule-plan",
+        {
+          studyPlanData: entirePlan,
+          testDate: testDate,
+          currentDate: currentDate,
+          planId: planId,
+        }
+      );
+
+      console.log("Reschedule response:", rescheduleResponse.data);
+
+      if (rescheduleResponse.data && rescheduleResponse.data.success) {
+        // Since the server doesn't return the updated plan data in the reschedule response,
+        // we need to fetch the updated plan separately
+
+        // Fetch the updated plan data
+        const updatedPlanResponse = await axios.post(
+          "http://localhost:5000/get-plans",
+          {
+            userId: JSON.parse(localStorage.getItem("userSession")).$id,
+          }
+        );
+
+        console.log("Updated plans:", updatedPlanResponse.data);
+
+        // Update the local storage with the new plan data if needed
+        // This ensures that when the dashboard loads, it will have the most recent data
+
+        // Finally navigate to dashboard
+        navigate("/dashboard/feature1");
+      } else {
+        setError(
+          "Failed to reschedule plan: " +
+            (rescheduleResponse.data?.error || "Unknown error")
+        );
+      }
+    } catch (err) {
+      console.error("Error rescheduling plan:", err);
+      setError(err.message || "Failed to reschedule plan");
+    } finally {
+      setLoading(false);
+    }}
+  };
+
   const getQuizResults = () => {
     // Return memoized results if available
     if (quizResults) return quizResults;
@@ -190,11 +448,13 @@ const Quiz = () => {
     let notAttempted = 0;
 
     questions.forEach((question) => {
-      if(question.correctAnswer>3){
+      if (question.correctAnswer > 3) {
         //compare the correctAnswer with the options and find the index of the correct answer
-        question.correctAnswer = question.options.findIndex((option) => option.text == question.correctAnswer);
+        question.correctAnswer = question.options.findIndex(
+          (option) => option.text == question.correctAnswer
+        );
       }
-      if (!selectedAnswers[question.id]=== null) {
+      if (!selectedAnswers[question.id] === null) {
         notAttempted++;
       } else if (selectedAnswers[question.id] === question.correctAnswer) {
         correct++;
@@ -227,40 +487,41 @@ const Quiz = () => {
           return {
             ...weekData,
             Tasks: weekData.Tasks.map((task, tIndex) => {
-              if (`week-${weekData.Week}-task-${tIndex}` === topicId) { // topicId should now be just the task index
+              if (`week-${weekData.Week}-task-${tIndex}` === topicId) {
+                // topicId should now be just the task index
                 return {
                   ...task,
                   testTaken: true,
-                  testScore: score
+                  testScore: score,
                 };
               }
               return task;
-            })
+            }),
           };
         }
         return weekData;
       });
-      console.log("planId: ",planId);
+      console.log("planId: ", planId);
       // Send the entire updated plan to backend
-      const response = await axios.post('http://localhost:5000/update-plan', {
+      const response = await axios.post("http://localhost:5000/update-plan", {
         planId: planId,
-        updatedPlan: updatedPlan
+        updatedPlan: updatedPlan,
       });
 
       if (!response.data.success) {
-        throw new Error(response.data.error || 'Failed to update plan');
+        throw new Error(response.data.error || "Failed to update plan");
       }
 
-      console.log('Plan updated successfully');
+      console.log("Plan updated successfully");
     } catch (err) {
-      console.error('Error updating plan:', err);
+      console.error("Error updating plan:", err);
     }
   };
 
   const handleSubmitQuiz = async () => {
     setQuizSubmitted(true);
     const results = getQuizResults();
-    
+
     // Only update plan if we have the full plan data and topic details
     if (entirePlan && weekIndex !== undefined && topicId !== undefined) {
       await updatePlanWithQuizResults(results.score);
@@ -526,10 +787,11 @@ const Quiz = () => {
                   Try Again
                 </button>
                 <button
-                  onClick={() => (window.location.href = "/dashboard/feature1")}
+                  onClick={handledashboardandreschedule}
+                  disabled={loading}
                   className="py-2 px-6 bg-[#c4e456] rounded-full hover:bg-opacity-90 transition text-gray-800"
                 >
-                  Back to Dashboard
+                  {loading ? "Rescheduling..." : "Back to Dashboard"}
                 </button>
               </div>
             </div>

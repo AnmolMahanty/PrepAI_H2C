@@ -243,7 +243,41 @@ app.post("/update-plan", async (req,res) => {
     }
   });
   
-
+  app.post("/reschedule-plan", async (req, res) => {
+    try {
+      const { studyPlanData, testDate, currentDate, planId } = req.body;
+  
+      if (!studyPlanData || !testDate || !currentDate) {
+        return res.status(400).json({
+          success: false,
+          error: "Missing required parameters",
+        });
+      }
+  
+      // Call the AI service to reschedule the plan
+      const { rescheduleStudyPlan } = require("./AiService");
+      const studyPlan = await rescheduleStudyPlan(
+        studyPlanData,
+        testDate,
+        currentDate,
+        planId
+      );
+  
+      // Update the plan in the database if needed
+      // For example with MongoDB: await PlanModel.findByIdAndUpdate(planId, { plan: JSON.stringify(studyPlan) });
+  
+      res.json({
+        success: true,
+        data: studyPlan,
+      });
+    } catch (error) {
+      console.error("Error in reschedule-plan:", error);
+      res.status(500).json({
+        success: false,
+        error: error.message || "Internal server error",
+      });
+    }
+  });
 
 
 server.listen(5000, () => {
