@@ -46,7 +46,7 @@ const Home = () => {
         localStorage.setItem("selected", "feature1");
         navigate("/dashboard/feature1");
       } else {
-        navigate("/dashboard/feature2");
+        navigate("/dashboard/feature1");
       }
       console.log(selected);
     } else {

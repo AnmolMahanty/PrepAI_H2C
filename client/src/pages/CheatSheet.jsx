@@ -165,57 +165,57 @@ const CheatSheetPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f8f8ec] to-[#f2f2e6] p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#f8f8ec] to-[#f2f2e6] p-3 sm:p-6">
       <div className="max-w-5xl mx-auto">
-        <div className="flex items-center mb-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center mb-4 sm:mb-6 gap-2">
           <button
             onClick={goBack}
-            className="flex items-center text-gray-700 hover:text-gray-900 mr-4 transition-colors duration-200 hover:bg-white hover:bg-opacity-50 p-2 rounded-lg"
+            className="flex items-center text-gray-700 hover:text-gray-900 transition-colors duration-200 hover:bg-white hover:bg-opacity-50 p-2 rounded-lg w-fit"
           >
             <ArrowLeft size={20} />
             <span className="ml-1 font-medium">Back</span>
           </button>
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
             {topic} Cheat Sheet
           </h1>
         </div>
 
-        {/* Show loading state */}
+        {/* Loading State */}
         {loading && (
-          <div className="flex justify-center items-center py-12">
-            <Loader2 size={40} className="animate-spin text-[#c4e456]" />
-            <span className="ml-3 text-lg text-gray-700">
+          <div className="flex flex-col sm:flex-row justify-center items-center py-8 sm:py-12">
+            <Loader2 size={40} className="animate-spin text-[#c4e456] mb-2 sm:mb-0" />
+            <span className="text-base sm:text-lg text-gray-700 sm:ml-3 text-center">
               Generating your cheat sheet...
             </span>
           </div>
         )}
 
-        {/* Show error */}
+        {/* Error Message */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 sm:px-4 sm:py-3 rounded-lg mb-4 sm:mb-6 text-sm sm:text-base">
             {error}
           </div>
         )}
 
-        {/* Show results */}
+        {/* Results Section */}
         {cheatSheet && (
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-gray-800">
-                {cheatSheet.metadata.topic} -{" "}
-                {cheatSheet.metadata.cheatsheet_type} Cheat Sheet
+          <div className="bg-white rounded-lg shadow-md p-3 sm:p-6 mb-4 sm:mb-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-3">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+                {cheatSheet.metadata.topic} - {cheatSheet.metadata.cheatsheet_type} Cheat Sheet
               </h2>
-              <div className="flex space-x-2">
+              <div className="flex flex-wrap gap-2">
                 <button
                   onClick={handlePrint}
-                  className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-md transition duration-200"
+                  className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-md transition duration-200 text-sm"
                 >
                   <Printer size={16} className="mr-1" />
                   Print
                 </button>
                 <button
                   onClick={handleDownload}
-                  className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-md transition duration-200"
+                  className="flex items-center bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-md transition duration-200 text-sm"
                 >
                   <Download size={16} className="mr-1" />
                   Download PDF
@@ -226,17 +226,17 @@ const CheatSheetPage = () => {
             <div
               id="printable-content"
               ref={contentRef}
-              className="prose max-w-none p-4 border border-gray-100 rounded-md bg-gray-50 print:bg-white"
+              className="prose max-w-none p-2 sm:p-4 border border-gray-100 rounded-md bg-gray-50 print:bg-white overflow-x-auto text-sm sm:text-base"
             >
               <ReactMarkdown>{cheatSheet.content}</ReactMarkdown>
             </div>
           </div>
         )}
 
-        {/* Only show form if not auto-generated */}
+        {/* Form Section */}
         {!location.state?.topic && !cheatSheet && (
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="bg-white rounded-lg shadow-md p-3 sm:p-6 mb-6 sm:mb-8">
+            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Topic
@@ -245,7 +245,7 @@ const CheatSheetPage = () => {
                   type="text"
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c4e456]"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c4e456] text-sm sm:text-base"
                   required
                   placeholder="E.g., Calculus, Digital Logic, Python Basics"
                 />
@@ -258,7 +258,7 @@ const CheatSheetPage = () => {
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c4e456]"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c4e456] text-sm sm:text-base"
                   required
                   rows={3}
                   placeholder="Describe what aspects you'd like the cheat sheet to cover"
@@ -272,7 +272,7 @@ const CheatSheetPage = () => {
                 <select
                   value={cheatSheetType}
                   onChange={(e) => setCheatSheetType(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c4e456]"
+                  className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c4e456] text-sm sm:text-base"
                 >
                   <option value="Comprehensive">Comprehensive</option>
                   <option value="Quick Reference">Quick Reference</option>
@@ -284,7 +284,7 @@ const CheatSheetPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#c4e456] hover:bg-[#b3d648] text-gray-900 font-medium py-2 px-4 rounded-md transition duration-200 flex items-center justify-center"
+                className="w-full bg-[#c4e456] hover:bg-[#b3d648] text-gray-900 font-medium py-2 px-4 rounded-md transition duration-200 flex items-center justify-center text-sm sm:text-base"
               >
                 {loading ? (
                   <>

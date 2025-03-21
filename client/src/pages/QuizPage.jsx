@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import quizLogo from '../assets/quizlogo.png'  // Update this import
 
 // Quiz Component
 const Quiz = () => {
@@ -649,7 +650,7 @@ const Quiz = () => {
             <div className="w-full bg-[#f8f8ec] rounded-lg p-6">
               <div className="w-full flex justify-center mb-6">
                 <img
-                  src="/assets/quizlogo.jpg"
+                  src={quizLogo}
                   alt="Quiz Icon"
                   className="w-12 h-12 rounded-full object-cover"
                 />
